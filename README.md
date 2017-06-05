@@ -3,4 +3,4 @@
 ## Lazy compilation
 Juse use:
 
-`g++ algebra.cpp main.cpp polyroots.cpp -o ronaldo`
+`g++ algebra.cpp main.cpp -o ronaldo`
