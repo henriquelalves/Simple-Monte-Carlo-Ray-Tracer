@@ -10,6 +10,7 @@
 #include "ray.h"
 #include "camera.h"
 #include "light.h"
+#include "bitmap/bitmap_image.hpp"
 
 using namespace std;
 
@@ -49,65 +50,63 @@ public:
 
     }
 
-    /* int render_scene(QImage* image, int camera_id, int drunk_mode){ */
-    /*     // Safe-check */
-    /*     if(camera_id < 0 || camera_id >= cameras.size()){ */
-    /*         return RENDERER_NO_CAMERA_ID; */
-    /*     } */
+    int render_scene(bitmap_image* image, int camera_id, int drunk_mode){
+        // Safe-check
+        if(camera_id < 0 || camera_id >= cameras.size()){
+            return RENDERER_NO_CAMERA_ID;
+        }
 
-    /*     Camera c = cameras[camera_id]; */
+        Camera c = cameras[camera_id];
 
-    /*     // Find dx and dy (distance between pixels on camera lens) */
-    /*     float dx = (c.get_lens_xmax() - c.get_lens_xmin()) / Iw; */
-    /*     float dy = (c.get_lens_ymax() - c.get_lens_ymin()) / Ih; */
+        // Find dx and dy (distance between pixels on camera lens)
+        float dx = (c.get_lens_xmax() - c.get_lens_xmin()) / Iw;
+        float dy = (c.get_lens_ymax() - c.get_lens_ymin()) / Ih;
 
-    /*     // For each pixel! */
-    /*     for(int i = 0; i < Ih; i++){ */
-    /*         for (int j = 0; j < Iw; j++){ */
-    /*             // Find the ray from the camera origin */
-    /*             float delta = 0.003f; */
-    /*             if(drunk_mode == 1) */
-    /*                 delta = 0.1f; */
+        // For each pixel!
+        for(int i = 0; i < Ih; i++){
+            for (int j = 0; j < Iw; j++){
+                // Find the ray from the camera origin
+                float delta = 0.003f;
+                if(drunk_mode == 1)
+                    delta = 0.1f;
 
-    /*             Vector3D lens_point1 = Vector3D(c.get_lens_xmin() + j*dx, */
-    /*                                            c.get_lens_ymax() - i*dy, */
-    /*                                            0); */
-    /*             Vector3D lens_point2 = Vector3D(c.get_lens_xmin() + j*dx + delta, */
-    /*                                            c.get_lens_ymax() - i*dy, */
-    /*                                            0); */
-    /*             Vector3D lens_point3 = Vector3D(c.get_lens_xmin() + j*dx, */
-    /*                                            c.get_lens_ymax() - i*dy + delta, */
-    /*                                            0); */
-    /*             Vector3D lens_point4 = Vector3D(c.get_lens_xmin() + j*dx + delta, */
-    /*                                            c.get_lens_ymax() - i*dy + delta, */
-    /*                                            0); */
+                Vector3D lens_point1 = Vector3D(c.get_lens_xmin() + j*dx,
+                                               c.get_lens_ymax() - i*dy,
+                                               0);
+                Vector3D lens_point2 = Vector3D(c.get_lens_xmin() + j*dx + delta,
+                                               c.get_lens_ymax() - i*dy,
+                                               0);
+                Vector3D lens_point3 = Vector3D(c.get_lens_xmin() + j*dx,
+                                               c.get_lens_ymax() - i*dy + delta,
+                                               0);
+                Vector3D lens_point4 = Vector3D(c.get_lens_xmin() + j*dx + delta,
+                                               c.get_lens_ymax() - i*dy + delta,
+                                               0);
 
-    /*             Ray lens_ray1 = Ray(c.get_origin(), lens_point1 - c.get_origin()); */
-    /*             Ray lens_ray2 = Ray(c.get_origin(), lens_point2 - c.get_origin()); */
-    /*             Ray lens_ray3 = Ray(c.get_origin(), lens_point3 - c.get_origin()); */
-    /*             Ray lens_ray4 = Ray(c.get_origin(), lens_point4 - c.get_origin()); */
+                Ray lens_ray1 = Ray(c.get_origin(), lens_point1 - c.get_origin());
+                Ray lens_ray2 = Ray(c.get_origin(), lens_point2 - c.get_origin());
+                Ray lens_ray3 = Ray(c.get_origin(), lens_point3 - c.get_origin());
+                Ray lens_ray4 = Ray(c.get_origin(), lens_point4 - c.get_origin());
 
-    /*             // Trace ray */
-    /*             Vector3D c = Vector3D(); */
-    /*             Vector3D temp; */
-    /*             trace_ray(lens_ray1, temp, 0); */
-    /*             c = c + temp; */
-    /*             trace_ray(lens_ray2, temp, 0); */
-    /*             c = c + temp; */
-    /*             trace_ray(lens_ray3, temp, 0); */
-    /*             c = c + temp; */
-    /*             trace_ray(lens_ray4, temp, 0); */
-    /*             c = c + temp; */
+                // Trace ray
+                Vector3D c = Vector3D();
+                Vector3D temp;
+                trace_ray(lens_ray1, temp, 0);
+                c = c + temp;
+                trace_ray(lens_ray2, temp, 0);
+                c = c + temp;
+                trace_ray(lens_ray3, temp, 0);
+                c = c + temp;
+                trace_ray(lens_ray4, temp, 0);
+                c = c + temp;
 
-    /*             c = 0.25 * c; */
+                c = 0.25 * c;
 
-    /*             uint crgb = qRgb(c[0],c[1],c[2]); */
-
-    /*             // Set pixel on image */
-    /*             image->setPixel(j,i,crgb); */
-    /*         } */
-    /*     } */
-    /* } */
+                // Set pixel on image
+		image->set_pixel(j,i,(char) c[0], (char) c[1], (char) c[2]);
+            }
+        }
+    }
 
 private:
     // Trace ray method!

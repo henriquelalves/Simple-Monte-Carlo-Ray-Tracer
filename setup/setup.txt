@@ -1,4 +1,4 @@
-TITLE: PotatoPotata.png
+TITLE: PotatoPotata.bmp
 WIDTH: 1920
 HEIGHT: 1080
 DRUNK_MODE: 0

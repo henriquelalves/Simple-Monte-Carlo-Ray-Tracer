@@ -54,21 +54,20 @@ int main(int argc, char *argv[])
 
     //-------------------------------------------------------
 
-	// create new image
-	// QImage image(width, height, QImage::Format_RGB32);
-
+    // create new image
+    bitmap_image image(width, height);
+    
     Scene s = Scene(width, height);
 
     // Add objects here
 
     // Render scene
-    // s.render_scene(&image, 0, drunk_mode);
+    s.render_scene(&image, 0, drunk_mode);
 
-	// save to file
-	// TODO: prompt user on command line for output name
+    // save to file
 
-    // image.save(title);
+    image.save_image(title);
 	
-	// application successfully returned
-	return 0;
+    // application successfully returned
+    return 0;
 }
